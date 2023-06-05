@@ -3,6 +3,10 @@ package com.example.calculator
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -71,7 +77,6 @@ fun Calculator() {
         .padding(6.dp)
         .size(80.dp)
         .clip(CircleShape)
-
     //Button Background Colors
     val numBtnColor = ButtonDefaults.buttonColors(Color.Black)
     val operationBtnColor = ButtonDefaults.buttonColors(Color.DarkGray)
@@ -109,7 +114,7 @@ fun Calculator() {
             ) {
                 Text(
                     text = display.format(answer.value),
-                    maxLines = 1 ,
+                    maxLines = 1,
                     style = TextStyle(fontSize = 50.sp)
                 )
             }//Row
@@ -125,7 +130,6 @@ fun Calculator() {
                 onClick = {
                     operation.value = operation.value
                         .replace(Regex("[0-9,+*/.-]"), "")
-                        .plus(0)
                     answer.value = 0.0
                 },
                 modifier = buttonModifier,
@@ -142,10 +146,9 @@ fun Calculator() {
                 modifier = buttonModifier,
                 colors = ButtonDefaults.buttonColors(Color.DarkGray)
             ) {
-                Text(
-                    text = "<-",
-                    color = Color.White,
-                    fontSize = 20.sp
+                Image(
+                    painterResource(id = R.drawable.arrow_back_),
+                    contentDescription = "Delete"
                 )
             }
             Button(
@@ -165,7 +168,8 @@ fun Calculator() {
             }
             Button(
                 onClick = {
-                    operation.value = operation.value.replace(Regex("[0-9,+*/.-]"), "").plus(0)
+                    operation.value = operation.value.replace(Regex("[0-9,+*/.-]"), "")
+                        .plus(0)
                 },
                 modifier = buttonModifier,
                 colors = operationBtnColor
@@ -185,7 +189,7 @@ fun Calculator() {
                 .fillMaxWidth()
         ) {
             Button(
-                onClick = { operation.value = operation.value.plus("7") },
+                onClick = { operation.value = operation.value.plus(7) },
                 modifier = buttonModifier,
                 colors = numBtnColor
             ) {
